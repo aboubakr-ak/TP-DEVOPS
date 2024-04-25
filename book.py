@@ -58,4 +58,12 @@ def update_book(book_id: int, request: schemas.book, db: Session = Depends(get_d
 
 
 
-# delete an existing book:
+# Delete an existing book
+@route.delete("/books/{book_id}")
+def delete_book(book_id: int, db: Session = Depends(get_db)):
+    book = db.query(models.book).filter(models.book.id == book_id).first()
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    db.delete(book)
+    db.commit()
+    return {"message": "Book deleted successfully"}
