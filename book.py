@@ -28,7 +28,10 @@ def add_book(request: schemas.book, db: Session = Depends(get_db)):
 
     return new_book
 
-# Retrieve a list of all books:
+# Retrieve a list of all books
+@route.get("/books", response_model=list[schemas.book])
+def get_books(db: Session = Depends(get_db)):
+    return db.query(models.book).all()
 
 # Retrieve details for a specific book:
 
