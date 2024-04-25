@@ -38,6 +38,16 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
     return user
 
 
-# Update an existing user:
+# Update an existing user
+@route.put("/users/{user_id}")
+def update_user(user_id: int, request: schemas.User, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    for key, value in request.dict().items():
+        setattr(user, key, value)
+    db.commit()
+    return {"message": "User updated successfully"}
+
 
 # delete an existing user:
