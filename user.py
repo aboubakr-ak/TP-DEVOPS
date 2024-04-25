@@ -21,7 +21,11 @@ def add_user(request: schemas.User, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-# Retrieve a list of all users:
+# Retrieve a list of all users
+@route.get("/users", response_model=list[schemas.User])
+def get_users(db: Session = Depends(get_db)):
+    return db.query(models.User).all()
+
 
 # Retrieve details for a specific user:
 
