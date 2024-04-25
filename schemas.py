@@ -15,7 +15,7 @@ class book (BaseModel):
 
 
 class User(BaseModel):
-
+    id: int
     name : str
     birthday : str
     gender : str
