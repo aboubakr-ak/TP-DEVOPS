@@ -45,6 +45,17 @@ def get_book(book_id: int, db: Session = Depends(get_db)):
 
 
 
-# Update an existing book:
+# Update an existing book
+@route.put("/books/{book_id}")
+def update_book(book_id: int, request: schemas.book, db: Session = Depends(get_db)):
+    book = db.query(models.book).filter(models.book.id == book_id).first()
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    for key, value in request.dict().items():
+        setattr(book, key, value)
+    db.commit()
+    return {"message": "Book updated successfully"}
+
+
 
 # delete an existing book:
